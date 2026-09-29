@@ -632,6 +632,27 @@ class HostAssignment(object):
         random.Random(seed).shuffle(final)
         return final
 
+def place_per_osd_daemons(
+    mgr: 'orchestrator.OrchestratorClientMixin',
+    daemon_type: str,
+) -> List[DaemonPlacement]:
+    """Return one DaemonPlacement(daemon_type, hostname, name=osd_id) for
+    every running OSD daemon, co-located on the same host.  This is what
+    enforces the one-fcm-dedup-per-OSD invariant (requirement R3)."""
+    placements: List[DaemonPlacement] = []
+    for osd in mgr.cache.get_daemons_by_service('osd'):  # type: ignore[attr-defined]
+        if osd.hostname is None:
+            continue
+        placements.append(
+            DaemonPlacement(
+                daemon_type=daemon_type,
+                hostname=osd.hostname,
+                name=str(osd.daemon_id),
+            )
+        )
+    return placements
+
+
     def remove_non_maintenance_unreachable_candidates(self, candidates: List[DaemonPlacement]) -> List[DaemonPlacement]:
         in_maintenance: Dict[str, bool] = {}
         for h in self.hosts:

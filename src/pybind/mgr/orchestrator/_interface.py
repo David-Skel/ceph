@@ -650,6 +650,7 @@ class Orchestrator(object):
             'smb': self.apply_smb,
             'mgmt-gateway': self.apply_mgmt_gateway,
             'oauth2-proxy': self.apply_oauth2_proxy,
+            'fcm-dedup': self.apply_fcm_dedup,
         }
 
         def merge(l: OrchResult[List[str]], r: OrchResult[str]) -> OrchResult[List[str]]:  # noqa: E741
@@ -1048,6 +1049,7 @@ def daemon_type_to_service(dtype: str) -> str:
         'jaeger-collector': 'jaeger-collector',
         'jaeger-query': 'jaeger-query',
         'smb': 'smb',
+        'fcm-dedup': 'fcm-dedup',
     }
     return mapping[dtype]
 
@@ -1086,6 +1088,7 @@ def service_to_daemon_types(stype: str) -> List[str]:
         'jaeger-query': ['jaeger-query'],
         'jaeger-tracing': ['elasticsearch', 'jaeger-query', 'jaeger-collector', 'jaeger-agent'],
         'smb': ['smb'],
+        'fcm-dedup': ['fcm-dedup'],
     }
     return mapping[stype]
 
