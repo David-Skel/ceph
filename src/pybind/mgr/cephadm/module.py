@@ -4904,6 +4904,10 @@ Then run the following:
     def apply_nfs(self, spec: ServiceSpec) -> str:
         return self._apply(spec)
 
+    @handle_orch_error
+    def apply_fcm_dedup(self, spec: ServiceSpec) -> str:
+        return self._apply(spec)
+
     def _get_dashboard_url(self):
         # type: () -> str
         return self.get('mgr_map').get('services', {}).get('dashboard', '')
