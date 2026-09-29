@@ -4778,6 +4778,7 @@ Then run the following:
                 'jaeger-query': PlacementSpec(count=1),
                 'node-proxy': PlacementSpec(host_pattern='*'),
                 SMBService.TYPE: PlacementSpec(count=1),
+                'fcm-dedup': PlacementSpec(host_pattern='*'),
             }
             spec.placement = defaults[spec.service_type]
         elif spec.service_type in ['mon', 'mgr'] and \
